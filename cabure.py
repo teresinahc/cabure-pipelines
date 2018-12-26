@@ -75,10 +75,10 @@ class CopyMonthToPostgresTask(postgres.CopyToTable):
 
     validity = luigi.parameter.MonthParameter(default=datetime.date.today())
 
-    host = config('DB_HOST')
-    database = config('DB_NAME')
-    user = config('DB_USER')
-    password = config('DB_PASSWORD')
+    host = config('DB_HOST', default='')
+    database = config('DB_NAME', default='')
+    user = config('DB_USER', default='')
+    password = config('DB_PASSWORD', default='')
     table = 'spends'
 
     columns = [

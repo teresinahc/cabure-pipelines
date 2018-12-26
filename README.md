@@ -12,7 +12,7 @@ docker build -t cabure .
 ## Run
 
 ```
-docker run --rm -it -v $(pwd):/usr/bin/app cabure --year 2017
+docker run --rm -it -v $(pwd):/usr/src/app -e 'PYTHONPATH=/usr/src/app' cabure luigi --local-scheduler --module cabure RunForYear --year 2017
 ```
 
 ## License

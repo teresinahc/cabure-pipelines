@@ -6,7 +6,10 @@ import luigi
 
 
 class XmlParseMixin:
-    '''Add a parse method which parses the input and return an ElementTree root element.'''
+    '''
+    Add a parse method which parses the input and return an ElementTree
+    root element.
+    '''
 
     def parse(self):
         '''Returns an ElementTree element of the root of XML file'''
@@ -16,9 +19,13 @@ class XmlParseMixin:
 
 
 class SubprocessTask(luigi.Task):
-    '''Pipe the input to the stdin of a given command and pipes its stdout to the output.'''
+    '''
+    Pipe the input to the stdin of a given command and pipes its stdout
+    to the output.
+    '''
+
     def run(self):
-        with self.input().open('r') as infile:        
+        with self.input().open('r') as infile:
             with self.output().open('w') as outfile:
                 subprocess.run(
                     self.command.split(),

@@ -3,6 +3,7 @@ import io
 
 import luigi.format
 
+
 class CSVInputProcessor:
     '''
     luigi input processor for CSV files
@@ -15,18 +16,18 @@ class CSVInputProcessor:
 
         if columns is not None:
             self.header = next(self.reader)
-    
+
     def __enter__(self):
         return self
-    
+
     def __exit__(self, type, value, traceback):
         # TODO: abort when catching an error
         self.input_pipe.close()
-    
+
     def __iter__(self):
         if self.columns is not None:
             yield self.header
-        
+
         for line in self.reader:
             yield tuple(line)
 
@@ -43,13 +44,13 @@ class CSVOutputProcessor:
 
         if columns is not None:
             self.writer.writerow(columns)
-    
+
     def write(self, *args):
         self.writer.writerow(args)
-    
+
     def __enter__(self):
         return self
-    
+
     def __exit__(self, type, value, traceback):
         # TODO: abort when catching an error
         self.output_pipe.close()
@@ -67,14 +68,14 @@ class CSVFormat(luigi.format.TextFormat):
     def __init__(self, delimiter=',', columns=None):
         self.columns = columns
         self.delimiter = delimiter
-    
+
     def pipe_reader(self, input_pipe):
         return CSVInputProcessor(
             io.TextIOWrapper(input_pipe),
             delimiter=self.delimiter,
             columns=self.columns
         )
-    
+
     def pipe_writer(self, output_pipe):
         return CSVOutputProcessor(
             io.TextIOWrapper(output_pipe),

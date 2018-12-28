@@ -2,7 +2,9 @@ import re
 
 
 def parse_name(page):
-    '''Finds and filters the name of the parliamentarian within a `page` element.'''
+    '''
+    Finds and filters the name of the parliamentarian within a `page` element.
+    '''
 
     el = page.find('./text[7]/b')
     if el is not None:
@@ -29,7 +31,10 @@ def parse_spends_from_page(page):
     spends = page.findall('./text[@font="5"]')
 
     for i in range(0, len(spends), 2):
-        yield parse_description(spends[i].text), parse_value(spends[i + 1].text)
+        yield (
+            parse_description(spends[i].text),
+            parse_value(spends[i + 1].text)
+        )
 
 
 # Unfortunaly musl has no time locales, so we need to do this.
@@ -56,6 +61,6 @@ def i18nmonth(month):
     ][int(month) - 1]
 
 
-name_replacement = re.compile('(^ Parlamentar: )|([\s]+$)')
-description_replacement = re.compile('(^(\s+)([IVXD]+)([\s]+))|([\s]+$)')
-value_regex = re.compile('[\d\.,]+')
+name_replacement = re.compile(r'(^ Parlamentar: )|([\s]+$)')
+description_replacement = re.compile(r'(^(\s+)([IVXD]+)([\s]+))|([\s]+$)')
+value_regex = re.compile(r'[\d\.,]+')

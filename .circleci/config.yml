@@ -7,6 +7,6 @@ jobs:
      - run: |
          docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-     - run: docker build -t teresinahackerclube/cabure-pipeline .
+     - run: docker build -t teresinahackerclube/cabure-pipeline:`git rev-parse HEAD | cut -c1-7` .
 
-     - run: docker push teresinahackerclube/cabure-pipeline:`git rev-parse HEAD | cut -c1-7`
+     - run: docker push teresinahackerclube/cabure-pipeline

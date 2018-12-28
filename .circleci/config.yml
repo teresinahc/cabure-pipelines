@@ -1,0 +1,12 @@
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+     - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+     - run: docker build -t teresinahackerclube/cabure-pipeline
+
+     - run: docker push teresinahackerclube/cabure-pipeline

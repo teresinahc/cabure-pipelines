@@ -11,6 +11,10 @@ TASK=DumpMonthSpendsTask
 PARAMS="--validity `date +'%Y-%m'`"
 COMMAND="luigi --module cabure $TASK $PARAMS"
 
+echo "Pulling docker image..."
+
+docker pull $IMAGE_NAME
+
 COMPLETE_COMMAND="docker run --network $NETWORK --env $ENVIRONMENT -v $VOLUME_LUIGICFG -v $VOLUME_DATA $IMAGE_NAME $COMMAND"
 
 echo "Running '${COMPLETE_COMMAND}'..."

@@ -1,12 +1,36 @@
 version: 2
 jobs:
- build:
-   machine: true
-   steps:
-     - checkout
-     - run: |
-         docker login -u $DOCKER_USER -p $DOCKER_PASS
+  build:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      
+      - run:
+          name: Setup virtualenv
+          command: virtualenv env
 
-     - run: docker build -t teresinahackerclube/cabure-pipeline:`git rev-parse HEAD | cut -c1-7` .
+      - run:
+          name: Install dependencies
+          command: |
+            . env/bin/activate
+            pip install -r requirements.txt
 
-     - run: docker push teresinahackerclube/cabure-pipeline
+      - run:
+          name: Run tests
+          command: |
+            . env/bin/activate
+            python -m unittest tests
+      
+      - setup_remote_docker:
+          docker_layer_caching: true
+      
+      - run:
+          name: Build Docker image
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker build -t teresinahackerclube/cabure-pipeline:`git rev-parse HEAD | cut -c1-7` .
+      
+      - run:
+          name: Pushing Docker image
+          command: docker push teresinahackerclube/cabure-pipeline
